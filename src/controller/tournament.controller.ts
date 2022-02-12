@@ -12,7 +12,6 @@ export class TournamentController {
 
     if (error) return next({ data: error.data, status: error.status });
 
-    res.header('access-token', result.token);
     res.status(result.status).send(result.data);
   }
 

@@ -1,5 +1,5 @@
 import { Repository, getConnection } from 'typeorm';
-
+import moment from 'moment';
 import { TournamentEntity } from '../entity/tournament.entity';
 import { ITournamentIdUserId } from '../Interface/user.interface';
 import { IResult } from '../Interface/return.interface';
@@ -25,6 +25,17 @@ export class TournamentRepository {
         const result = await getConnection().manager.save(tournament);
 
         return { result: { data: result, status: 201 } };
+          } catch (error) {
+        return { error };
+      }
+    }
+    async createTournament(value: ITournament): Promise<IResult<TournamentEntity, IError>> {
+      try {
+        this.typeORMRepository = getRepository(TournamentEntity);
+        const tournament = this.typeORMRepository.create(value);
+        const result = await this.typeORMRepository.save(tournament);
+
+        return { result };
       } catch (error) {
         return { error };
       }
