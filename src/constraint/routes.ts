@@ -10,4 +10,5 @@ export const routes = {
   USER: '/user',
   TOURNAMENT: '/tournament',
   CREATE: '/create',
+  ADD_USER_TO_TOURNAMENT: '/add-user-to-tournament',
 };

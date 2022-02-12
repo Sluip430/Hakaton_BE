@@ -4,10 +4,10 @@ import { authorizationController } from '../controller/authorization.controller'
 
 export const routerUser = Router();
 
-routerUser.post(routes.SIGN_UP, authorizationController.signUp);
-routerUser.get(routes.CONFIRM_EMAIL, authorizationController.confirmEmail);
-routerUser.post(routes.ACCEPT_INVITATION, authorizationController.additionalInfo);
-routerUser.post(routes.SIGN_IN, authorizationController.signIn);
-routerUser.post(routes.FORGOT_PASSWORD, authorizationController.forgotPassword);
-routerUser.get(routes.MAIL_CHANGE_PASSWORD, authorizationController.mailChangePassword);
-routerUser.post(routes.CHANGE_PASSWORD, authorizationController.changePassword);
+routerUser.post(routes.SIGN_UP, authorizationController.signUp)
+  .get(routes.CONFIRM_EMAIL, authorizationController.confirmEmail)
+  .post(routes.ACCEPT_INVITATION, authorizationController.additionalInfo)
+  .post(routes.SIGN_IN, authorizationController.signIn)
+  .post(routes.FORGOT_PASSWORD, authorizationController.forgotPassword)
+  .get(routes.MAIL_CHANGE_PASSWORD, authorizationController.mailChangePassword)
+  .post(routes.CHANGE_PASSWORD, authorizationController.changePassword);
