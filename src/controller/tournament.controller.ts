@@ -21,11 +21,10 @@ export class TournamentController {
 
     if (validationError) return next({ data: validationError, status: 400 });
 
-    const { result, error } = await authorizationServices.signIn(value);
+    const { result, error } = await tournamentServices.addUserToTournament(value);
 
     if (error) return next({ data: error.data, status: error.status });
 
-    res.header('access-token', result.token);
     res.status(result.status).send(result.data);
   }
 }
