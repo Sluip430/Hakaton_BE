@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { authorizationServices } from '../services/authorization/authorization.services';
 import { addUserToTournamentValidation, createValidation } from '../middlewares/validation/tournament.validator';
+import { tournamentServices } from '../services/tournament.services';
 
 export class TournamentController {
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -8,7 +8,7 @@ export class TournamentController {
 
     if (validationError) return next({ data: validationError, status: 400 });
 
-    const { result, error } = await authorizationServices.signIn(value);
+    const { result, error } = await tournamentServices.create(value);
 
     if (error) return next({ data: error.data, status: error.status });
 
