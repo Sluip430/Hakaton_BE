@@ -34,7 +34,7 @@ export class SendMail {
         html: htmlMail(path, token, text),
       });
 
-      return { result: `${text}${path}${token}` };
+      return { result: `${text}` };
     } catch (error) {
       return { error };
     }

@@ -2,6 +2,7 @@ import {
   Entity, Column, PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IUser } from '../Interface/user.interface';
+import { userEnum } from '../enum/user.enum';
 
 @Entity()
 export class UserEntity implements IUser {
@@ -20,6 +21,13 @@ export class UserEntity implements IUser {
 
     @Column()
     password: string;
+
+    @Column({
+      type: 'enum',
+      enum: userEnum,
+      default: userEnum.USER,
+    })
+    role: userEnum;
 
     @Column({
       nullable: true,
@@ -56,6 +64,31 @@ export class UserEntity implements IUser {
       default: null,
     })
     activated_at: Date;
+
+    @Column({
+      default: 0,
+    })
+    games: number;
+
+    @Column({
+      default: 0,
+    })
+    wins: number;
+
+    @Column({
+      default: 0,
+    })
+    draws: number;
+
+    @Column({
+      default: 0,
+    })
+    loses: number;
+
+    @Column({
+      default: 0,
+    })
+    cup_wins: number;
 
     @Column({
       type: 'jsonb',

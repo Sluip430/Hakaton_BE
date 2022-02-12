@@ -7,4 +7,7 @@ export const routes = {
   MAIL_CHANGE_PASSWORD: '/mail-change-password',
   CHANGE_PASSWORD: '/change-password',
   API: '/api',
+  USER: '/user',
+  TOURNAMENT: '/tournament',
+  CREATE: '/create',
 };
