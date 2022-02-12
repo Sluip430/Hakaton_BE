@@ -3,7 +3,7 @@ import {
   IQuery, IResult, IReturnError, IReturnResult, IReturnResultWithToken,
 } from '../../Interface/return.interface';
 import { IUser } from '../../Interface/user.interface';
-import { userRepository } from '../../repository/user.repository';
+import { userRepository } from '../../repository/authorization.repository';
 import { comparePassword, hashPassword } from '../../bcrypt/bcryptPassword';
 import { decodeToken, generateToken } from '../jwt';
 import { sendMail } from '../../helpers/sendGrid/sendMail';
@@ -121,9 +121,7 @@ export class AuthorizationServices {
     if (!DBResult) return false;
     const time = moment().toDate();
 
-    if (Number(time) > (Number(DBResult.confirmation_send_at) + 3 * 3600 * 1000)) return false;
-
-    return true;
+    return Number(time) <= (Number(DBResult.confirmation_send_at) + 3 * 3600 * 1000);
   }
 
   async additionalInfo(value: IUser, token: string | string[]): Promise<IResult<IReturnResultWithToken, IReturnError>> {
