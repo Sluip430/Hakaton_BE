@@ -1,16 +1,34 @@
-import { getRepository, Repository } from 'typeorm';
-
+import { Repository, getConnection } from 'typeorm';
 import moment from 'moment';
 import { TournamentEntity } from '../entity/tournament.entity';
-import { IUser } from '../Interface/user.interface';
-import { IResult, IReturnUserEntity } from '../Interface/return.interface';
+import { ITournamentIdUserId } from '../Interface/user.interface';
+import { IResult } from '../Interface/return.interface';
 import { IError } from '../Interface/Error';
 import { UserEntity } from '../entity/user.entity';
-import {ITournament} from "../Interface/tournament.interface";
 
 export class TournamentRepository {
     typeORMRepository: Repository<TournamentEntity>;
-    constructor() {}
+
+    async addUserToTournament(value: ITournamentIdUserId): Promise<IResult<any, IError>> {
+      try {
+        const user = new UserEntity();
+
+        user.id = value.user_id;
+        await getConnection().manager.save(user);
+
+        const tournament = new TournamentEntity();
+
+        tournament.id = value.tournament_id;
+
+        tournament.users = [user];
+
+        const result = await getConnection().manager.save(tournament);
+
+        return { result: { data: result, status: 201 } };
+          } catch (error) {
+        return { error };
+      }
+    }
     async createTournament(value: ITournament): Promise<IResult<TournamentEntity, IError>> {
       try {
         this.typeORMRepository = getRepository(TournamentEntity);

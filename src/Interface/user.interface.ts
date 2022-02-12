@@ -1,7 +1,5 @@
 import { userRoleEnum } from '../enum/user.enum';
 
-
-
 export interface IUser {
     id: number;
     login: string;
@@ -20,4 +18,9 @@ export interface IUser {
     loses: number;
     cup_wins: number;
     session: { session_id: number, expired_at: Date }[];
+}
+
+export interface ITournamentIdUserId {
+   tournament_id: number,
+   user_id: number,
 }
