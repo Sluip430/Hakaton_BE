@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { routes } from '../constraint/routes';
 import { authorizationController } from '../controller/authorization.controller';
+import { userController } from '../controller/user.controller';
 
 export const routerUser = Router();
 
@@ -10,4 +11,5 @@ routerUser.post(routes.SIGN_UP, authorizationController.signUp)
   .post(routes.SIGN_IN, authorizationController.signIn)
   .post(routes.FORGOT_PASSWORD, authorizationController.forgotPassword)
   .get(routes.MAIL_CHANGE_PASSWORD, authorizationController.mailChangePassword)
-  .post(routes.CHANGE_PASSWORD, authorizationController.changePassword);
+  .post(routes.CHANGE_PASSWORD, authorizationController.changePassword)
+  .get(routes.GET_USER_PROFILE, userController.getUserById);

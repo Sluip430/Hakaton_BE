@@ -1,11 +1,11 @@
-import { ITournamentIdUserId } from '../Interface/user.interface';
+import { ITournamentIdUserId, IUser } from '../Interface/user.interface';
 import { tournamentRepository } from '../repository/tournament.repository';
 import { IResult } from '../Interface/return.interface';
-import { ITournament } from '../Interface/tournament.interface';
+import { userRepository } from '../repository/user.repository';
 
-export class TournamentServices {
-  async create(value: ITournament): Promise<IResult<any, any>> {
-    const { result: DBResult, error: DBError } = await tournamentRepository.createTournament(value);
+export class UserServices {
+  async getUserById(id: number): Promise<IResult<any, any>> {
+    const { result: DBResult, error: DBError } = await userRepository.getUserById(id);
 
     if (DBError) return { error: DBError };
 
@@ -20,4 +20,4 @@ export class TournamentServices {
   }
 }
 
-export const tournamentServices = new TournamentServices();
+export const userServices = new UserServices();
