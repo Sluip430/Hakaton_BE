@@ -2,7 +2,7 @@ import {
   Entity, Column, PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IUser } from '../Interface/user.interface';
-import { userEnum } from '../enum/user.enum';
+import { userRoleEnum } from '../enum/user.enum';
 
 @Entity()
 export class UserEntity implements IUser {
@@ -24,10 +24,10 @@ export class UserEntity implements IUser {
 
     @Column({
       type: 'enum',
-      enum: userEnum,
-      default: userEnum.USER,
+      enum: userRoleEnum,
+      default: userRoleEnum.USER,
     })
-    role: userEnum;
+    role: userRoleEnum;
 
     @Column({
       nullable: true,
