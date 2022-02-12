@@ -40,6 +40,16 @@ export class TournamentRepository {
         return { error };
       }
     }
+    async getTournamentByStatus(status: string): Promise<IResult<TournamentEntity[], IError>> {
+      try {
+        this.typeORMRepository = getRepository(TournamentEntity);
+        const result = await this.typeORMRepository.find({ where: { status } });
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
 }
 
 export const tournamentRepository = new TournamentRepository();

@@ -11,8 +11,17 @@ export class TournamentServices {
 
     return { result: { data: DBResult, status: 200 } };
   }
+
   async addUserToTournament(value: ITournamentIdUserId) {
     const { result, error } = await tournamentRepository.addUserToTournament(value);
+
+    if (error) return { error: { data: 'Please verify your account ', status: 401 } };
+
+    return { result: { data: result, status: 200 } };
+  }
+
+  async getTournament(value: ITournament) {
+    const { result, error } = await tournamentRepository.getTournamentByStatus(value.status);
 
     if (error) return { error: { data: 'Please verify your account ', status: 401 } };
 

@@ -17,3 +17,7 @@ export const addUserToTournamentValidation = Joi.object().keys({
   tournament_id: Joi.number().required(),
   user_id: Joi.number().required(),
 });
+
+export const getTournamentValidation = Joi.object().keys({
+  status: Joi.string().required(),
+});
