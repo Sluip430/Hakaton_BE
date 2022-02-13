@@ -19,7 +19,6 @@ export class TournamentRepository {
 
         return { result: { data: result, status: 201 } };
       } catch (error) {
-
         return { error };
       }
     }

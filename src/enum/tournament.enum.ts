@@ -21,3 +21,8 @@ export enum TournamentScenarioEnum {
     TWO_MATCH_CONFRONTATION='two match confrontation',
     TO_THREE_WINS='to three wins',
 }
+
+export enum ChampionshipStatusEnum {
+    FINISHED='finished',
+    Coming='coming',
+}
