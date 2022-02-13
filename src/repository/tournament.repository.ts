@@ -1,4 +1,5 @@
 import { Repository, getConnection, getRepository } from 'typeorm';
+import moment from 'moment';
 import { TournamentEntity } from '../entity/tournament.entity';
 import { ITournamentIdUserId } from '../Interface/user.interface';
 import { IResult } from '../Interface/return.interface';
@@ -49,10 +50,10 @@ export class TournamentRepository {
       }
     }
 
-    async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity[], IError>> {
+    async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity, IError>> {
       try {
         this.typeORMRepository = getRepository(TournamentEntity);
-        const result = await this.typeORMRepository.find({ where: value });
+        const result = await this.typeORMRepository.findOne({ where: { id: value.tournament_id } });
 
         return { result };
       } catch (error) {
@@ -68,6 +69,17 @@ export class TournamentRepository {
           .leftJoinAndSelect('tournament.users', 'users')
           .where(`tournament.id = ${value.tournament_id}`)
           .getMany();
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
+    async changeData(value: any) {
+      try {
+        this.typeORMRepository = getRepository(TournamentEntity);
+        const result = await this.typeORMRepository.save(value);
 
         return { result };
       } catch (error) {
