@@ -13,4 +13,5 @@ export const routes = {
   ADD_USER_TO_TOURNAMENT: '/add-user-to-tournament',
   GET_USER_PROFILE: '/get-user-profile',
   GET_TOURNAMENT: '/get-tournament',
+  TOURNAMENT_BY_ID: '/:id',
 };

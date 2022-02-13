@@ -29,6 +29,7 @@ export class TournamentRepository {
         return { error };
       }
     }
+
     async createTournament(value: ITournament): Promise<IResult<TournamentEntity, IError>> {
       try {
         this.typeORMRepository = getRepository(TournamentEntity);
@@ -40,20 +41,11 @@ export class TournamentRepository {
         return { error };
       }
     }
+
     async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity[], IError>> {
       try {
-        const { page, perPage } = value;
-
-        delete value.page;
-        delete value.perPage;
-
         this.typeORMRepository = getRepository(TournamentEntity);
-        const result = await this.typeORMRepository.find({
-          order:
-            value,
-          skip: page,
-          take: perPage,
-        });
+        const result = await this.typeORMRepository.find({ where: value });
 
         return { result };
       } catch (error) {

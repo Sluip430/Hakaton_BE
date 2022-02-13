@@ -19,6 +19,7 @@ export const addUserToTournamentValidation = Joi.object().keys({
 });
 
 export const getTournamentValidation = Joi.object().keys({
+  id: Joi.number().positive(),
   status: Joi.string(),
   name: Joi.string().min(2),
   description: Joi.string().min(2),
@@ -30,6 +31,4 @@ export const getTournamentValidation = Joi.object().keys({
   number_of_participants: Joi.number().min(2),
   scenario: Joi.string().min(2),
   players: Joi.number().min(2),
-  page: Joi.number().min(1).default(1),
-  perPage: Joi.number().min(1).default(20),
 });
