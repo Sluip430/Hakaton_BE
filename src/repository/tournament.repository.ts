@@ -50,10 +50,10 @@ export class TournamentRepository {
       }
     }
 
-    async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity, IError>> {
+    async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity[], IError>> {
       try {
         this.typeORMRepository = getRepository(TournamentEntity);
-        const result = await this.typeORMRepository.findOne({ where: value });
+        const result = await this.typeORMRepository.find({ where: value });
 
         return { result };
       } catch (error) {
