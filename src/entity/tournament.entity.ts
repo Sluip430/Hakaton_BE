@@ -17,6 +17,7 @@ export class TournamentEntity implements ITournament {
 
     @Column({
       length: 255,
+      unique: true,
     })
     name: string;
 

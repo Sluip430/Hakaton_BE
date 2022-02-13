@@ -11,22 +11,15 @@ export class TournamentRepository {
 
     async addUserToTournament(value: ITournamentIdUserId): Promise<IResult<any, IError>> {
       try {
-        console.log(value);
-        const user = new UserEntity();
-
-        user.id = value.user_id;
-        await getConnection().manager.save(user);
-
-        const tournament = new TournamentEntity();
-
-        tournament.id = value.tournament_id;
-
-        tournament.users = [user];
-
-        const result = await getConnection().manager.save(tournament);
+        const result = await this.typeORMRepository
+          .createQueryBuilder('tournament')
+          .relation(TournamentEntity, 'users')
+          .of(value.tournament_id)
+          .add(value.user_id);
 
         return { result: { data: result, status: 201 } };
       } catch (error) {
+
         return { error };
       }
     }
@@ -43,10 +36,39 @@ export class TournamentRepository {
       }
     }
 
+    async addPlayerToAllPlayersTournament(value: any): Promise<IResult<TournamentEntity, IError>> {
+      try {
+        this.typeORMRepository = getRepository(TournamentEntity);
+        const tournamentToUpdate = await this.typeORMRepository.findOne(value.tournament_id);
+
+        tournamentToUpdate.players += 1;
+        const result = await this.typeORMRepository.save(tournamentToUpdate);
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
     async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity[], IError>> {
       try {
         this.typeORMRepository = getRepository(TournamentEntity);
         const result = await this.typeORMRepository.find({ where: value });
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
+    async getUserTournamentById(value: any) {
+      try {
+        this.typeORMRepository = getRepository(TournamentEntity);
+        const result = await this.typeORMRepository
+          .createQueryBuilder('tournament')
+          .leftJoinAndSelect('tournament.users', 'users')
+          .where(`tournament.id = ${value.tournament_id}`)
+          .getMany();
 
         return { result };
       } catch (error) {
