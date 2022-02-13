@@ -1,6 +1,6 @@
 export const mail = {
-  PATH_CONF: 'http://sluipgenius.pp.ua/api/confirm-email?token=',
-  PATH_FORGOT_PASS: 'http://sluipgenius.pp.ua/api/mail-change-password?token=',
+  PATH_CONF: 'http://sluipgenius.pp.ua/api/user/confirm-email?token=',
+  PATH_FORGOT_PASS: 'http://sluipgenius.pp.ua/api/user/mail-change-password?token=',
   emailFrom: 'oleht@wizardsdev.com',
 };
 
