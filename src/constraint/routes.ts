@@ -15,5 +15,7 @@ export const routes = {
   GET_TOURNAMENT: '/get-tournament',
   TOURNAMENT_BY_ID: '/:id',
   START_TOURNAMENT: '/start-tournament',
+  GET_CHAMPIONSHIP_MATCH_FOR_USER: '/get-championship-match-for-user',
+  GET_CHAMPIONSHIP_STATISTIC: '/get-championship-statistic',
   SET_RESULT_MATCH_CHAMPIONSHIP: '/set-result-match-championship',
 };

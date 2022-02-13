@@ -19,6 +19,16 @@ export class ChampionshipRepository {
       }
     }
 
+    async getMatchesForUser(value: any) {
+      try {
+        this.typeORMRepository = getRepository(MatchChampionshipEntity);
+        const result = await this.typeORMRepository.find({ where: [{ first_user: value.user_id }, { second_user: value.user_id }] });
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
     async setMatchResult(value: any) {
       try {
         this.typeORMRepository = getRepository(MatchChampionshipEntity);
