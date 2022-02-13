@@ -94,4 +94,4 @@ export class AuthorizationRepository {
   }
 }
 
-export const userRepository = new AuthorizationRepository();
+export const authorizationRepository = new AuthorizationRepository();

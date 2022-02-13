@@ -3,7 +3,7 @@ import {
   IQuery, IResult, IReturnError, IReturnResult, IReturnResultWithToken,
 } from '../../Interface/return.interface';
 import { IUser } from '../../Interface/user.interface';
-import { userRepository } from '../../repository/authorization.repository';
+import { authorizationRepository } from '../../repository/authorization.repository';
 import { comparePassword, hashPassword } from '../../bcrypt/bcryptPassword';
 import { decodeToken, generateToken } from '../jwt';
 import { sendMail } from '../../helpers/sendGrid/sendMail';
@@ -13,7 +13,7 @@ import { ConfigurationService } from '../../configurations/controller.config';
 
 export class AuthorizationServices {
   async signIn(value: IUser): Promise<IResult<IReturnResultWithToken, IReturnError>> {
-    const { result: DBResult, error: DBError } = await userRepository.getUserByLogin(value.login);
+    const { result: DBResult, error: DBError } = await authorizationRepository.getUserByLogin(value.login);
 
     if (DBError) return { error: DBError };
     if (!DBResult) return { error: { data: 'User Not Found', status: 404 } };
@@ -30,7 +30,7 @@ export class AuthorizationServices {
     }
 
     const token = generateToken(DBResult, ConfigurationService.getCustomKey('JWT_ACCESS_KEY'));
-    const { error } = await userRepository.generateUserSession(DBResult);
+    const { error } = await authorizationRepository.generateUserSession(DBResult);
 
     if (error) return { error };
 
@@ -38,7 +38,7 @@ export class AuthorizationServices {
   }
 
   async forgotPassword(value: IUser): Promise<IResult<IReturnResult, IReturnError>> {
-    const { result: DBResult, error: DBError } = await userRepository.getUserByEmail(value.email);
+    const { result: DBResult, error: DBError } = await authorizationRepository.getUserByEmail(value.email);
 
     if (DBError) return { error: DBError };
     if (!DBResult) return { error: { data: 'Not Found', status: 404 } };
@@ -63,7 +63,7 @@ export class AuthorizationServices {
 
     if (tokenError) return { error: tokenError };
 
-    const { result: DBResult, error: DBError } = await userRepository.getUserByEmail(data.email);
+    const { result: DBResult, error: DBError } = await authorizationRepository.getUserByEmail(data.email);
 
     if (DBError) return { error: DBError };
     if (!DBResult) return { error: { data: 'Not Found', status: 404 } };
@@ -78,13 +78,13 @@ export class AuthorizationServices {
 
     if (tokenError) return { error: tokenError };
 
-    const { result: DBResult, error: DBError } = await userRepository.getUserByEmail(data.email);
+    const { result: DBResult, error: DBError } = await authorizationRepository.getUserByEmail(data.email);
 
     if (DBError) return { error: DBError };
     if (!DBResult) return { error: { data: 'Not Found', status: 404 } };
 
     const newPassword = await hashPassword(value.password);
-    const { result, error } = await userRepository.updateUserPassword(DBResult, newPassword);
+    const { result, error } = await authorizationRepository.updateUserPassword(DBResult, newPassword);
 
     if (error) return { error };
 
@@ -94,7 +94,7 @@ export class AuthorizationServices {
   async signUp(value: IUser): Promise<IResult<IReturnResult, IReturnError>> {
     value.password = await hashPassword(value.password);
 
-    const { result: DBResult, error: DBError } = await userRepository.createUser(value);
+    const { result: DBResult, error: DBError } = await authorizationRepository.createUser(value);
 
     if (DBError) return { error: { data: DBError.message, status: 500 } };
     const token = generateToken(DBResult.data, ConfigurationService.getCustomKey('JWT_MAIL_KEY'));
@@ -115,7 +115,7 @@ export class AuthorizationServices {
     const { result, error } = decodeToken(value.token, ConfigurationService.getCustomKey('JWT_MAIL_KEY'));
 
     if (error) return false;
-    const { result: DBResult, error: DBError } = await userRepository.getUserByEmail(result.email);
+    const { result: DBResult, error: DBError } = await authorizationRepository.getUserByEmail(result.email);
 
     if (DBError) return false;
     if (!DBResult) return false;
@@ -129,7 +129,7 @@ export class AuthorizationServices {
 
     if (error) return { error };
 
-    const { error: DBError } = await userRepository.addInfoUser(value, result.id);
+    const { error: DBError } = await authorizationRepository.addInfoUser(value, result.id);
 
     if (DBError) return { error: DBError };
 
