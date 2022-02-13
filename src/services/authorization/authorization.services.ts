@@ -96,7 +96,7 @@ export class AuthorizationServices {
 
     const { result: DBResult, error: DBError } = await authorizationRepository.createUser(value);
 
-    if (DBError) return { error: { data: DBError.message, status: 500 } };
+    if (DBError) return { error: { data: 'User with this login or password already exists', status: 500 } };
     const token = generateToken(DBResult.data, ConfigurationService.getCustomKey('JWT_MAIL_KEY'));
     const { result: MailerResult, error: MailerError } = await sendMail.writeMail({
       email: DBResult.data.email,
