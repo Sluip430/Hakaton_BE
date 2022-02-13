@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import {
   addUserToTournamentValidation,
   createValidation,
-  getTournamentValidation, startTournamentValidation
+  getTournamentValidation, matchResultValidator, startTournamentValidation
 } from '../middlewares/validation/tournament.validator';
 import { tournamentServices } from '../services/tournament.services';
 
@@ -49,6 +49,18 @@ export class TournamentController {
     if (validationError) return next({ data: validationError, status: 400 });
 
     const { result, error } = await tournamentServices.startTournament(value);
+
+    if (error) return next({ data: error.data, status: error.status });
+
+    res.status(result.status).send(result.data);
+  }
+
+  async setChampMatchResult(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { value, error: validationError } = matchResultValidator.validate(req.body, { abortEarly: false });
+
+    if (validationError) return next({ data: validationError, status: 400 });
+
+    const { result, error } = await tournamentServices.setChampMatchResult(value);
 
     if (error) return next({ data: error.data, status: error.status });
 

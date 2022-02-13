@@ -83,6 +83,15 @@ export class TournamentServices {
 
     return { result: { data: users, status: 200 } };
   }
+
+  async setChampMatchResult(value: any) {
+    const { result, error } = await championshipRepository.setMatchResult(value);
+
+    console.log(result, error);
+    if (error) return { error: { data: error.message, status: 500 } };
+
+    return { result: { data: result, status: 200 } };
+  }
 }
 
 export const tournamentServices = new TournamentServices();

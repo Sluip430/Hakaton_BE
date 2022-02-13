@@ -1,6 +1,8 @@
 import { getRepository, Repository } from 'typeorm';
+import moment from 'moment';
 import { MatchChampionshipEntity } from '../entity/match-championship';
 import { TournamentEntity } from '../entity/tournament.entity';
+import { UserEntity } from '../entity/user.entity';
 
 export class ChampionshipRepository {
     typeORMRepository: Repository<MatchChampionshipEntity>;
@@ -10,6 +12,22 @@ export class ChampionshipRepository {
         this.typeORMRepository = getRepository(MatchChampionshipEntity);
         const tournament = this.typeORMRepository.create(value);
         const result = await this.typeORMRepository.save(tournament);
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
+    async setMatchResult(value: any) {
+      try {
+        this.typeORMRepository = getRepository(MatchChampionshipEntity);
+        const result = await this.typeORMRepository.createQueryBuilder().update(MatchChampionshipEntity).set({
+          first_user_score: value.first_user_score,
+          second_user_score: value.second_user_score,
+        })
+          .where('id = :id', { id: value.match_id })
+          .execute();
 
         return { result };
       } catch (error) {
