@@ -34,7 +34,7 @@ export class AuthorizationServices {
 
     if (error) return { error };
 
-    return { result: { data: 'Successful Enter!', status: 200, token } };
+    return { result: { data: DBResult.role, status: 200, token } };
   }
 
   async forgotPassword(value: IUser): Promise<IResult<IReturnResult, IReturnError>> {
