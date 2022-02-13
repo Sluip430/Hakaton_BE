@@ -16,10 +16,10 @@ export class AuthorizationController {
 
     const { result, error } = await authorizationServices.signIn(value);
 
-    if (error) return next({ data: error, status: error.status });
+    if (error) return next({ data: error.data, status: error.status });
 
     res.header('access-token', result.token);
-    res.status(result.status).send({ data: result, status: result.status });
+    res.status(result.status).send({ data: result.data, status: result.status });
   }
   async forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { value, error: validationError } = emailValidation.validate(req.body, { abortEarly: false });
@@ -28,7 +28,7 @@ export class AuthorizationController {
 
     const { result, error } = await authorizationServices.forgotPassword(value);
 
-    if (error) return next({ data: error, status: error.status });
+    if (error) return next({ data: error.data, status: error.status });
 
     res.status(result.status).send(result);
   }
@@ -50,7 +50,7 @@ export class AuthorizationController {
     if (validationError) return next({ data: validationError, status: 400 });
     const { result, error } = await authorizationServices.changePassword(value, req.headers.token as string);
 
-    if (error) return next({ data: error, status: error.status });
+    if (error) return next({ data: error.data, status: error.status });
 
     res.status(result.status).send(result);
   }
@@ -61,7 +61,7 @@ export class AuthorizationController {
 
     const { result, error } = await authorizationServices.signUp(value);
 
-    if (error) return next({ data: error, status: error.status });
+    if (error) return next({ data: error.data, status: error.status });
 
     res.status(201).send(result);
   }
@@ -86,7 +86,7 @@ export class AuthorizationController {
 
     const { result, error } = await authorizationServices.additionalInfo(value, req.headers.token);
 
-    if (error) return next({ data: error, status: error.status });
+    if (error) return next({ data: error.data, status: error.status });
 
     res.header('access-token', result.token);
     res.status(result.status).send(result);

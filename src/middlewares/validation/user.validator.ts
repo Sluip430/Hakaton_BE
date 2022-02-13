@@ -1,13 +1,14 @@
 import Joi from 'joi';
+import { regExp } from '../../configurations/regExp';
 
 export const signUpValidation = Joi.object().keys({
-  login: Joi.string().min(2).required(),
-  email: Joi.string().min(2).required(),
-  password: Joi.string().min(2).required(),
+  login: Joi.string().min(2).alphanum().required(),
+  email: Joi.string().min(2).regex(regExp.EMAIL).required(),
+  password: Joi.string().min(2).regex(regExp.CHECK_PASSWORD).required(),
 });
 
 export const signInValidation = Joi.object().keys({
-  login: Joi.string().min(2).required(),
+  login: Joi.string().min(2).alphanum().required(),
   password: Joi.string().min(2).required(),
 });
 
