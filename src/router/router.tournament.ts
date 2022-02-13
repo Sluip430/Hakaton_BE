@@ -7,4 +7,5 @@ export const routerTournament = Router();
 routerTournament
   .post(routes.CREATE, tournamentController.create)
   .post(routes.ADD_USER_TO_TOURNAMENT, tournamentController.addUserToTournament)
-  .get(routes.GET_TOURNAMENT, tournamentController.getTournamentsFilter);
+  .get(routes.GET_TOURNAMENT, tournamentController.getTournamentsFilter)
+  .post(routes.START_TOURNAMENT, tournamentController.startTournament);

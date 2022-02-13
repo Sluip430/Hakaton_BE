@@ -14,7 +14,7 @@ export class TournamentServices {
 
   async addUserToTournament(value: ITournamentIdUserId) {
     const { result, error } = await tournamentRepository.getUserTournamentById(value);
-
+    
     if (error) return { error: { data: error.message, status: 500 } };
 
     if (result[0].number_of_participants === result[0].users.length) return { error: { data: 'Tournament is full', status: 400 } };
@@ -32,6 +32,14 @@ export class TournamentServices {
 
   async getTournamentsFilter(value: ITournament) {
     const { result, error } = await tournamentRepository.getTournamentsFilter(value);
+
+    if (error) return { error: { data: error.message, status: 500 } };
+
+    return { result: { data: result, status: 200 } };
+  }
+
+  async startTournament(id: number) {
+    const { result, error } = await tournamentRepository.getTournamentsFilter(id);
 
     if (error) return { error: { data: error.message, status: 500 } };
 
