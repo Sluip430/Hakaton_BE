@@ -10,7 +10,7 @@ export const createValidation = Joi.object().keys({
   level: Joi.string().min(2).required(),
   number_of_participants: Joi.number().min(2).required(),
   scenario: Joi.string().min(2).required(),
-  players: Joi.number().min(2).required(),
+  players: Joi.number().default(0),
 });
 
 export const addUserToTournamentValidation = Joi.object().keys({
@@ -31,4 +31,8 @@ export const getTournamentValidation = Joi.object().keys({
   number_of_participants: Joi.number().min(2),
   scenario: Joi.string().min(2),
   players: Joi.number().min(2),
+});
+
+export const startTournamentValidation = Joi.object().keys({
+  tournament_id: Joi.number().required(),
 });

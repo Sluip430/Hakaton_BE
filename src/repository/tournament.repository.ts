@@ -11,6 +11,7 @@ export class TournamentRepository {
 
     async addUserToTournament(value: ITournamentIdUserId): Promise<IResult<any, IError>> {
       try {
+        console.log(value);
         const user = new UserEntity();
 
         user.id = value.user_id;

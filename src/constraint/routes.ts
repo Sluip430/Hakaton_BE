@@ -14,4 +14,5 @@ export const routes = {
   GET_USER_PROFILE: '/get-user-profile',
   GET_TOURNAMENT: '/get-tournament',
   TOURNAMENT_BY_ID: '/:id',
+  START_TOURNAMENT: '/start-tournament',
 };

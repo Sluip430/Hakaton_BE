@@ -15,13 +15,21 @@ export class TournamentServices {
   async addUserToTournament(value: ITournamentIdUserId) {
     const { result, error } = await tournamentRepository.addUserToTournament(value);
 
-    if (error) return { error: { data: 'Please verify your account ', status: 401 } };
+    if (error) return { error: { data: error.message, status: 401 } };
 
     return { result: { data: result, status: 200 } };
   }
 
   async getTournamentsFilter(value: ITournament) {
     const { result, error } = await tournamentRepository.getTournamentsFilter(value);
+
+    if (error) return { error: { data: error.message, status: 500 } };
+
+    return { result: { data: result, status: 200 } };
+  }
+
+  async startTournament(id: number) {
+    const { result, error } = await tournamentRepository.getTournamentsFilter(id);
 
     if (error) return { error: { data: error.message, status: 500 } };
 
