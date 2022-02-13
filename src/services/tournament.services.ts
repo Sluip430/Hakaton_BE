@@ -41,7 +41,7 @@ export class TournamentServices {
   }
 
   async startTournament(value: any) {
-    const { result, error } = await tournamentRepository.getTournamentById(value);
+    const { result, error } = await tournamentRepository.getUserTournamentById(value);
 
     if (error) return { error: { data: error, status: 500 } };
 
@@ -51,9 +51,9 @@ export class TournamentServices {
 
     const { users } = usersResult[0];
 
-    if (result.status !== TournamentStatusEnum.OPEN) return { error: { data: 'You can start only open tournament ', status: 400 } };
+    if (result[0].status !== TournamentStatusEnum.OPEN) return { error: { data: 'You can start only open tournament ', status: 400 } };
 
-    if (result.mode === TournamentModeEnum.CHAMPIONSHIP) {
+    if (result[0].mode === TournamentModeEnum.CHAMPIONSHIP) {
       for (let i = 0; i < users.length; i++) {
         for (let j = i + 1; j < users.length; j++) {
           const match = {
@@ -61,7 +61,7 @@ export class TournamentServices {
             second_user_score: 0,
             date_match: new Date(),
             status: ChampionshipStatusEnum.Coming,
-            tournament_id: value.tournament_id,
+            tournament: value.tournament_id,
             first_user: users[i],
             second_user: users[j],
           };
@@ -73,7 +73,7 @@ export class TournamentServices {
       return { result: { data: 'Sorry your backend Developers dont realize this feature', status: 418 } };
     }
 
-    result.status = TournamentStatusEnum.ACTIVE;
+    result[0].status = TournamentStatusEnum.ACTIVE;
 
     const { error: tournamentError } = await tournamentRepository.changeData(result);
 

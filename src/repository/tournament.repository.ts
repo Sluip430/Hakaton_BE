@@ -1,10 +1,8 @@
-import { Repository, getConnection, getRepository } from 'typeorm';
-import moment from 'moment';
+import { Repository, getRepository } from 'typeorm';
 import { TournamentEntity } from '../entity/tournament.entity';
 import { ITournamentIdUserId } from '../Interface/user.interface';
 import { IResult } from '../Interface/return.interface';
 import { IError } from '../Interface/Error';
-import { UserEntity } from '../entity/user.entity';
 import { ITournament } from '../Interface/tournament.interface';
 
 export class TournamentRepository {
