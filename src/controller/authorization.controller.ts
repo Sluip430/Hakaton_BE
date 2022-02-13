@@ -18,7 +18,7 @@ export class AuthorizationController {
 
     if (error) return next({ data: error.data, status: error.status });
 
-    res.header('access-token', result.token);
+    res.header('token', result.token);
     res.status(result.status).send({ data: result.data, status: result.status });
   }
   async forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -41,7 +41,7 @@ export class AuthorizationController {
 
     if (error) return res.redirect(redirect.EMAIL_FORGOT_ERROR);
 
-    res.setHeader('confirmation-token', result.data);
+    res.setHeader('token', result.data);
     res.redirect(`${redirect.EMAIL_FORGOT_SUCCESS}?token=${result.data}`);
   }
   async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -73,7 +73,7 @@ export class AuthorizationController {
     const result = await authorizationServices.confirmEmail(value);
 
     if (result) {
-      res.setHeader('confirmation-token', value.token);
+      res.setHeader('token', value.token);
       res.redirect(`${redirect.EMAIL_CONF_SUCCESS}?token=${value.token}`);
     } else {
       res.redirect(redirect.EMAIL_CONF_ERROR);
@@ -88,7 +88,7 @@ export class AuthorizationController {
 
     if (error) return next({ data: error.data, status: error.status });
 
-    res.header('access-token', result.token);
+    res.header('token', result.token);
     res.status(result.status).send(result);
   }
 }
