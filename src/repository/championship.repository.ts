@@ -3,6 +3,7 @@ import moment from 'moment';
 import { MatchChampionshipEntity } from '../entity/match-championship';
 import { TournamentEntity } from '../entity/tournament.entity';
 import { UserEntity } from '../entity/user.entity';
+import { ChampionshipStatusEnum } from '../enum/tournament.enum';
 
 export class ChampionshipRepository {
     typeORMRepository: Repository<MatchChampionshipEntity>;
@@ -23,6 +24,7 @@ export class ChampionshipRepository {
       try {
         this.typeORMRepository = getRepository(MatchChampionshipEntity);
         const result = await this.typeORMRepository.find({ where: [{ first_user: value.user_id }, { second_user: value.user_id }] });
+
         return { result };
       } catch (error) {
         return { error };
@@ -35,6 +37,7 @@ export class ChampionshipRepository {
         const result = await this.typeORMRepository.createQueryBuilder().update(MatchChampionshipEntity).set({
           first_user_score: value.first_user_score,
           second_user_score: value.second_user_score,
+          status: ChampionshipStatusEnum.FINISHED,
         })
           .where('id = :id', { id: value.match_id })
           .execute();
