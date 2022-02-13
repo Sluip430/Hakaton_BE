@@ -40,10 +40,20 @@ export class TournamentRepository {
         return { error };
       }
     }
-    async getTournamentByStatus(status: string): Promise<IResult<TournamentEntity[], IError>> {
+    async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity[], IError>> {
       try {
+        const { page, perPage } = value;
+
+        delete value.page;
+        delete value.perPage;
+
         this.typeORMRepository = getRepository(TournamentEntity);
-        const result = await this.typeORMRepository.find({ where: { status } });
+        const result = await this.typeORMRepository.find({
+          order:
+            value,
+          skip: page,
+          take: perPage,
+        });
 
         return { result };
       } catch (error) {

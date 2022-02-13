@@ -31,12 +31,12 @@ export class TournamentController {
     res.status(result.status).send(result.data);
   }
 
-  async getTournament(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getTournamentsFilter(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { value, error: validationError } = getTournamentValidation.validate(req.query, { abortEarly: false });
 
     if (validationError) return next({ data: validationError, status: 400 });
 
-    const { result, error } = await tournamentServices.getTournament(value);
+    const { result, error } = await tournamentServices.getTournamentsFilter(value);
 
     if (error) return next({ data: error.data, status: error.status });
 
