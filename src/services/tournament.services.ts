@@ -54,8 +54,6 @@ export class TournamentServices {
     if (result.status !== TournamentStatusEnum.OPEN) return { error: { data: 'You can start only open tournament ', status: 400 } };
 
     if (result.mode === TournamentModeEnum.CHAMPIONSHIP) {
-      // Взять всех юзеров из турнамента.
-
       for (let i = 0; i < users.length; i++) {
         for (let j = i + 1; j < users.length; j++) {
           const match = {
@@ -82,6 +80,14 @@ export class TournamentServices {
     if (tournamentError) return { error: { data: error.message, status: 500 } };
 
     return { result: { data: users, status: 200 } };
+  }
+
+  async getChampionshipMatchesForUser(value: ITournament) {
+    const { result, error } = await championshipRepository.getMatchesForUser(value);
+
+    if (error) return { error: { data: error.message, status: 500 } };
+
+    return { result: { data: result, status: 200 } };
   }
 }
 
