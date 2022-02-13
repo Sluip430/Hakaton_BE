@@ -33,7 +33,7 @@ export const getTournamentValidation = Joi.object().keys({
   players: Joi.number().min(2),
 });
 
-export const startTournamentValidation = Joi.object().keys({
+export const tournamentValidation = Joi.object().keys({
   tournament_id: Joi.number().required(),
 });
 

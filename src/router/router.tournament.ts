@@ -9,4 +9,5 @@ routerTournament
   .post(routes.ADD_USER_TO_TOURNAMENT, tournamentController.addUserToTournament)
   .get(routes.GET_TOURNAMENT, tournamentController.getTournamentsFilter)
   .post(routes.START_TOURNAMENT, tournamentController.startTournament)
-  .get(routes.GET_CHAMPIONSHIP_MATCH_FOR_USER, tournamentController.getChampionshipMatchesForUser);
+  .get(routes.GET_CHAMPIONSHIP_MATCH_FOR_USER, tournamentController.getChampionshipMatchesForUser)
+  .get(routes.GET_CHAMPIONSHIP_STATISTIC, tournamentController.getChampionshipStatistic);

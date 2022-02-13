@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import {
   addUserToTournamentValidation,
   createValidation, getChampionshipMatchesForUser,
-  getTournamentValidation, startTournamentValidation,
+  getTournamentValidation, tournamentValidation,
 } from '../middlewares/validation/tournament.validator';
 import { tournamentServices } from '../services/tournament.services';
 
@@ -44,7 +44,7 @@ export class TournamentController {
   }
 
   async startTournament(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { value, error: validationError } = startTournamentValidation.validate(req.body, { abortEarly: false });
+    const { value, error: validationError } = tournamentValidation.validate(req.body, { abortEarly: false });
 
     if (validationError) return next({ data: validationError, status: 400 });
 
@@ -61,6 +61,18 @@ export class TournamentController {
     if (validationError) return next({ data: validationError, status: 400 });
 
     const { result, error } = await tournamentServices.getChampionshipMatchesForUser(value);
+
+    if (error) return next({ data: error.data, status: error.status });
+
+    res.status(result.status).send(result.data);
+  }
+
+  async getChampionshipStatistic(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { value, error: validationError } = tournamentValidation.validate(req.query, { abortEarly: false });
+
+    if (validationError) return next({ data: validationError, status: 400 });
+
+    const { result, error } = await tournamentServices.getChampionshipStatistic(value);
 
     if (error) return next({ data: error.data, status: error.status });
 
