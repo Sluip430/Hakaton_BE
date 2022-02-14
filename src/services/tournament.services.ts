@@ -4,6 +4,8 @@ import { IResult } from '../Interface/return.interface';
 import { ITournament } from '../Interface/tournament.interface';
 import { ChampionshipStatusEnum, TournamentModeEnum, TournamentStatusEnum } from '../enum/tournament.enum';
 import { championshipRepository } from '../repository/championship.repository';
+import { championshipTableRepository } from '../repository/championshipTable.repository';
+import { userRepository } from '../repository/user.repository';
 
 export class TournamentServices {
   async create(value: ITournament): Promise<IResult<any, any>> {
@@ -55,6 +57,7 @@ export class TournamentServices {
 
     if (result[0].mode === TournamentModeEnum.CHAMPIONSHIP) {
       for (let i = 0; i < users.length; i++) {
+        await championshipTableRepository.createResultOfMatches(result[0], users[i]);
         for (let j = i + 1; j < users.length; j++) {
           const match = {
             first_user_score: 0,
@@ -94,6 +97,39 @@ export class TournamentServices {
     const { result, error } = await championshipRepository.setMatchResult(value);
 
     if (error) return { error: { data: error.message, status: 500 } };
+
+    const { result: matchResult, error: matchError } = await championshipRepository.getChampionshipByMatchId(value);
+
+    if (matchError) return { error: { data: matchError.message, status: 501 } };
+
+    if (matchResult[0].first_user_score === matchResult[0].second_user_score) {
+      return { error: { data: 'Only one player can win', status: 500 } };
+    }
+
+    if (matchResult[0].status === ChampionshipStatusEnum.Coming) {
+      const { error: firstUserError }
+          = await championshipTableRepository.updateResultOfMatches(
+            matchResult[0], matchResult[0].first_user, matchResult[0].first_user_score,
+          );
+
+      if (firstUserError) return { error: { data: firstUserError.message, status: 500 } };
+      const { error: secondUserError }
+          = await championshipTableRepository.updateResultOfMatches(
+            matchResult[0], matchResult[0].second_user, matchResult[0].second_user_score,
+          );
+
+      if (matchResult[0].first_user_score > matchResult[0].second_user_score) {
+        await userRepository.setUserStatistic(matchResult[0].first_user, 1, 0);
+        await userRepository.setUserStatistic(matchResult[0].second_user, 0, 1);
+      } else {
+        await userRepository.setUserStatistic(matchResult[0].second_user, 1, 0);
+        await userRepository.setUserStatistic(matchResult[0].first_user, 0, 1);
+      }
+
+      if (secondUserError) return { error: { data: secondUserError.message, status: 500 } };
+    }
+
+    await championshipRepository.setMatchStatus(value, ChampionshipStatusEnum.FINISHED);
 
     return { result: { data: result, status: 200 } };
   }

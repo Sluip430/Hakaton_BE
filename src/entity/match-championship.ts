@@ -4,9 +4,10 @@ import {
 import { TournamentEntity } from './tournament.entity';
 import { UserEntity } from './user.entity';
 import { ChampionshipStatusEnum } from '../enum/tournament.enum';
+import { IMatchChampionship } from '../Interface/championship.interface';
 
 @Entity()
-export class MatchChampionshipEntity {
+export class MatchChampionshipEntity implements IMatchChampionship {
     @PrimaryGeneratedColumn()
     id: number;
 

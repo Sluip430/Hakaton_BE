@@ -37,10 +37,41 @@ export class ChampionshipRepository {
         const result = await this.typeORMRepository.createQueryBuilder().update(MatchChampionshipEntity).set({
           first_user_score: value.first_user_score,
           second_user_score: value.second_user_score,
-          status: ChampionshipStatusEnum.FINISHED,
         })
           .where('id = :id', { id: value.match_id })
           .execute();
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
+    async setMatchStatus(value: any, status: ChampionshipStatusEnum) {
+      try {
+        this.typeORMRepository = getRepository(MatchChampionshipEntity);
+        const result = await this.typeORMRepository.createQueryBuilder().update(MatchChampionshipEntity).set({
+          status,
+        })
+          .where('id = :id', { id: value.match_id })
+          .execute();
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
+    async getChampionshipByMatchId(value: any) {
+      try {
+        this.typeORMRepository = getRepository(MatchChampionshipEntity);
+        const result = await this.typeORMRepository
+          .createQueryBuilder('championship')
+          .leftJoinAndSelect('championship.first_user', 'firstUser')
+          .leftJoinAndSelect('championship.second_user', 'secondUser')
+          .leftJoinAndSelect('championship.tournament', 'tournament')
+          .where(`championship.id = ${value.match_id}`)
+          .getMany();
 
         return { result };
       } catch (error) {
