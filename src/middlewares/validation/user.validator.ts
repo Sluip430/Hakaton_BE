@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { regExp } from '../../configurations/regExp';
+import {userRoleEnum} from "../../enum/user.enum";
 
 export const signUpValidation = Joi.object().keys({
   login: Joi.string().min(2).alphanum().required(),
@@ -33,4 +34,19 @@ export const passwordValidation = Joi.object().keys({
 
 export const userByIdValidation = Joi.object().keys({
   id: Joi.number().required(),
+});
+
+export const userValidation = Joi.object().keys({
+  id: Joi.number(),
+  login: Joi.string().min(2),
+  email: Joi.string().min(2),
+  role: Joi.string().min(2),
+  first_name: Joi.string().min(2),
+  last_name: Joi.string().min(2),
+  gender: Joi.string().min(2),
+  games: Joi.number(),
+  wins: Joi.number(),
+  draws: Joi.number(),
+  loses: Joi.number(),
+  cup_wins: Joi.number(),
 });

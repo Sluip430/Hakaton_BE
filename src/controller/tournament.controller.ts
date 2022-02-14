@@ -5,9 +5,6 @@ import {
   getTournamentValidation, tournamentValidation, matchResultValidator,
 } from '../middlewares/validation/tournament.validator';
 import { tournamentServices } from '../services/tournament.services';
-import { ITournament } from '../Interface/tournament.interface';
-import { TournamentModeEnum } from '../enum/tournament.enum';
-import { tournamentRepository } from '../repository/tournament.repository';
 
 export class TournamentController {
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {

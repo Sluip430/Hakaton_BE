@@ -2,7 +2,6 @@ import {
   Entity, Column, PrimaryGeneratedColumn, ManyToOne,
 } from 'typeorm';
 import { TournamentEntity } from './tournament.entity';
-import { IMatchCup } from '../Interface/match-cup.interface';
 import { UserEntity } from './user.entity';
 import { ChampionshipStatusEnum } from '../enum/tournament.enum';
 
