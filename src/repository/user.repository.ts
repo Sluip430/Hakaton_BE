@@ -4,9 +4,6 @@ import {
   IResult,
 } from '../Interface/return.interface';
 import { IError } from '../Interface/Error';
-import { ChampionshipStatusEnum } from '../enum/tournament.enum';
-import { MatchChampionshipEntity } from '../entity/match-championship';
-import { TournamentEntity } from '../entity/tournament.entity';
 
 export class AuthorizationRepository {
     typeORMRepository: Repository<UserEntity>;

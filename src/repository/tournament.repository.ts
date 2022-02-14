@@ -8,7 +8,8 @@ import { ITournament } from '../Interface/tournament.interface';
 export class TournamentRepository {
     typeORMRepository: Repository<TournamentEntity>;
 
-    async addUserToTournament(value: ITournamentIdUserId): Promise<IResult<any, IError>> {
+    async addUserToTournament(value: any): Promise<IResult<any, IError>> {
+        console.log(value);
       try {
         const result = await this.typeORMRepository
           .createQueryBuilder('tournament')

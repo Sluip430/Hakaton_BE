@@ -6,6 +6,8 @@ import { ChampionshipStatusEnum, TournamentModeEnum, TournamentStatusEnum } from
 import { championshipRepository } from '../repository/championship.repository';
 import { championshipTableRepository } from '../repository/championshipTable.repository';
 import { userRepository } from '../repository/user.repository';
+import { decodeToken } from './jwt';
+import { ConfigurationService } from '../configurations/controller.config';
 
 export class TournamentServices {
   async create(value: ITournament): Promise<IResult<any, any>> {
@@ -27,6 +29,7 @@ export class TournamentServices {
 
     if (addingError) return { error: { data: addingError, status: 500 } };
 
+    console.log(value);
     const { result: DBResult, error: DBError } = await tournamentRepository.addPlayerToAllPlayersTournament(value);
 
     if (DBError) return { error: { data: error.message, status: 400 } };
@@ -144,6 +147,21 @@ export class TournamentServices {
     if (error) return { error: { data: error, status: 500 } };
 
     return { result: { data: result, status: 200 } };
+  }
+
+  async enterToTournament(body, token) {
+    const { result, error } = await decodeToken(token as string, ConfigurationService.getCustomKey('JWT_ACCESS_KEY'));
+
+    const newObj = {
+      tournament_id: body.tournament_id,
+      user_id: result.id,
+    };
+
+    const { error: addingError } = await tournamentRepository.addUserToTournament(newObj);
+
+    if (addingError) return { error: { data: addingError.message, status: 500 } };
+
+    return { result: { data: 'Add', status: 200 } };
   }
 }
 
