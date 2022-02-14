@@ -12,4 +12,5 @@ routerUser.post(routes.SIGN_UP, authorizationController.signUp)
   .post(routes.FORGOT_PASSWORD, authorizationController.forgotPassword)
   .get(routes.MAIL_CHANGE_PASSWORD, authorizationController.mailChangePassword)
   .post(routes.CHANGE_PASSWORD, authorizationController.changePassword)
-  .get(routes.GET_USER_PROFILE, userController.getUserById);
+  .get(routes.GET_USER_PROFILE, userController.getUserById)
+  .get(routes.GET_USERS, userController.getUsers);

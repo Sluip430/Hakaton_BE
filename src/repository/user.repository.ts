@@ -38,6 +38,17 @@ export class AuthorizationRepository {
         return { error };
       }
     }
+  
+    async getUsers(value: any): Promise<IResult<UserEntity[], IError>> {
+      try {
+        this.typeORMRepository = getRepository(UserEntity);
+        const result = await this.typeORMRepository.find({ where: value });
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
 }
 
 export const userRepository = new AuthorizationRepository();
