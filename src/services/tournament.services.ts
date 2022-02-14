@@ -149,6 +149,34 @@ export class TournamentServices {
     return { result: { data: result, status: 200 } };
   }
 
+  async getChampionshipTable(value: ITournament) {
+    const { result, error } = await tournamentRepository.getTournamentById(value);
+
+    if (error) return { error: { data: error, status: 500 } };
+
+    if (result.mode !== TournamentModeEnum.CHAMPIONSHIP) {
+      return { error: { data: 'This tournament mode isn`t championship', status: 500 } };
+    }
+
+    const { result: tableResult, error: tableError } = await championshipTableRepository.getChampionshipTable(value);
+
+    if (tableError) return { error: { data: tableError, status: 501 } };
+
+    return { result: { data: tableResult, status: 200 } };
+  }
+
+  async getChampionshipMatchesByUser(value) {
+    const { result: userResult, error: errorResult } = await userRepository.getUserById(value.user_id);
+
+    if (errorResult) return { error: { data: errorResult, status: 500 } };
+
+    const { result: matchResult, error: matchError } = await championshipRepository.getMatchesForUser1(value, userResult);
+
+    if (matchError) return { error: { data: matchError, status: 500 } };
+
+    return { result: { data: matchResult, status: 200 } };
+  }
+
   async enterToTournament(body, token) {
     const { result, error } = await decodeToken(token as string, ConfigurationService.getCustomKey('JWT_ACCESS_KEY'));
 

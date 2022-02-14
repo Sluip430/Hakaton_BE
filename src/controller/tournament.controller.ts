@@ -5,6 +5,7 @@ import {
   getTournamentValidation, tournamentValidation, matchResultValidator,
 } from '../middlewares/validation/tournament.validator';
 import { tournamentServices } from '../services/tournament.services';
+import { userRepository } from '../repository/user.repository';
 
 export class TournamentController {
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -91,6 +92,18 @@ export class TournamentController {
     res.status(result.status).send(result.data);
   }
 
+  async getChampionshipTable(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { value, error: validationError } = tournamentValidation.validate(req.query, { abortEarly: false });
+
+    if (validationError) return next({ data: validationError, status: 400 });
+
+    const { result, error } = await tournamentServices.getChampionshipTable(value);
+
+    if (error) return next({ data: error.data, status: error.status });
+
+    res.status(result.status).send(result.data);
+  }
+
   async enterToTournament(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { value: body, error: bodyError } = tournamentValidation.validate(req.body, { abortEarly: false });
 
@@ -102,6 +115,5 @@ export class TournamentController {
 
     res.status(result.status).send(result.data);
   }
-}
 
 export const tournamentController = new TournamentController();
