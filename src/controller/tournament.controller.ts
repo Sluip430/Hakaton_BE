@@ -104,17 +104,16 @@ export class TournamentController {
     res.status(result.status).send(result.data);
   }
 
-  async getChampionshipMatchesByUser(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { value, error: validationError } = getChampionshipMatchesForUser.validate(req.query, { abortEarly: false });
+  async enterToTournament(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { value: body, error: bodyError } = tournamentValidation.validate(req.body, { abortEarly: false });
 
-    if (validationError) return next({ data: validationError, status: 400 });
+    if (bodyError) return next({ data: bodyError, status: 400 });
 
-    const { result, error } = await tournamentServices.getChampionshipMatchesByUser(value);
+    const { result, error } = await tournamentServices.enterToTournament(body, req.headers.token);
 
     if (error) return next({ data: error.data, status: error.status });
 
     res.status(result.status).send(result.data);
   }
-}
 
 export const tournamentController = new TournamentController();

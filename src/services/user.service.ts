@@ -18,6 +18,14 @@ export class UserServices {
 
     return { result: { data: result, status: 200 } };
   }
+
+  async getUsers(value: any): Promise<IResult<any, any>> {
+    const { result: DBResult, error: DBError } = await userRepository.getUsers(value);
+
+    if (DBError) return { error: DBError };
+
+    return { result: { data: DBResult, status: 200 } };
+  }
 }
 
 export const userServices = new UserServices();
