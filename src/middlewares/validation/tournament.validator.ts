@@ -28,7 +28,7 @@ export const getTournamentValidation = Joi.object().keys({
   start_date: Joi.date().min(new Date()),
   last_registration_date: Joi.date().min(new Date()),
   level: Joi.string().min(2),
-  number_of_participants: Joi.number().min(2),
+  number_of_participants: Joi.number().min(2).max(10),
   scenario: Joi.string().min(2),
   players: Joi.number().min(2),
 });
