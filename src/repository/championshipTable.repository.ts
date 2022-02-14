@@ -1,8 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
-import moment from 'moment';
 import { ChampionshipTableEntity } from '../entity/championshipTable.entity';
-import { MatchChampionshipEntity } from '../entity/match-championship';
 import { TournamentEntity } from '../entity/tournament.entity';
 import { UserEntity } from '../entity/user.entity';
 
@@ -46,10 +44,14 @@ export class ChampionshipTableRepository {
       }
     }
 
-    async getUserAndChampionship(tournament: TournamentEntity, user: UserEntity) {
+    async getChampionshipTable(value: any) {
       try {
         this.typeORMRepository = getRepository(ChampionshipTableEntity);
-        const result = await this.typeORMRepository.findOne({ where: [{ tournament }, { user }] });
+        const result = await this.typeORMRepository
+          .createQueryBuilder('championshipTable')
+          .leftJoinAndSelect('championshipTable.user', 'user')
+          .where(`championshipTable.tournament = ${value.tournament_id}`)
+          .getMany();
 
         return { result };
       } catch (error) {

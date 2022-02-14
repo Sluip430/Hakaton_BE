@@ -40,7 +40,7 @@ export const tournamentValidation = Joi.object().keys({
 export const getChampionshipMatchesForUser = Joi.object().keys({
   tournament_id: Joi.number().required(),
   user_id: Joi.number().required(),
-  });
+});
 export const matchResultValidator = Joi.object().keys({
   match_id: Joi.number().positive().required(),
   first_user_score: Joi.number().max(1).required(),

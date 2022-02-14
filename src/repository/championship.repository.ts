@@ -1,7 +1,5 @@
 import { getRepository, Repository } from 'typeorm';
-import moment from 'moment';
 import { MatchChampionshipEntity } from '../entity/match-championship';
-import { TournamentEntity } from '../entity/tournament.entity';
 import { UserEntity } from '../entity/user.entity';
 import { ChampionshipStatusEnum } from '../enum/tournament.enum';
 
@@ -71,6 +69,22 @@ export class ChampionshipRepository {
           .leftJoinAndSelect('championship.second_user', 'secondUser')
           .leftJoinAndSelect('championship.tournament', 'tournament')
           .where(`championship.id = ${value.match_id}`)
+          .getMany();
+
+        return { result };
+      } catch (error) {
+        return { error };
+      }
+    }
+
+    async getMatchesForUser1(value: any, user: UserEntity) {
+      try {
+        this.typeORMRepository = getRepository(MatchChampionshipEntity);
+        const result = await this.typeORMRepository.createQueryBuilder()
+          .where('(first_user = :user_id OR second_user = :user_id) and tournament = :tournament', {
+            user_id: user,
+            tournament: value.tournament_id,
+          })
           .getMany();
 
         return { result };
