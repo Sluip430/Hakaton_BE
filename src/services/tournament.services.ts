@@ -135,15 +135,13 @@ export class TournamentServices {
   }
 
   async getChampionshipStatistic(value: ITournament) {
-    const { result, error } = await tournamentRepository.getTournamentById(value);
+    //const { result, error } = await tournamentRepository.getTournamentById(value);
 
-    if (result.mode !== TournamentModeEnum.CHAMPIONSHIP) {
-      return { error: { data: 'This tournament mode isn`t championship', status: 500 } };
-    }
+    const { result: DBResult, error: DBError } = await championshipRepository.getTournamentMatches(value);
 
-    if (error) return { error: { data: error, status: 500 } };
+    if (DBError) return { error: { data: DBError, status: 500 } };
 
-    return { result: { data: result, status: 200 } };
+    return { result: { data: DBResult, status: 200 } };
   }
 
   async getChampionshipTable(value: ITournament) {
@@ -167,11 +165,11 @@ export class TournamentServices {
 
     if (errorResult) return { error: { data: errorResult, status: 500 } };
 
-    const { result: matchResult, error: matchError } = await championshipRepository.getMatchesForUser1(value, userResult);
-
-    if (matchError) return { error: { data: matchError, status: 500 } };
-
-    return { result: { data: matchResult, status: 200 } };
+    // const { result: matchResult, error: matchError } = await championshipRepository.getMatchesForUser1(value, userResult);
+    //
+    // if (matchError) return { error: { data: matchError, status: 500 } };
+    //
+    return { result: { data: 1, status: 200 } };
   }
 }
 
