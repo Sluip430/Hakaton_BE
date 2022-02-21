@@ -48,12 +48,22 @@ export class TournamentRepository {
       }
     }
 
-    async getTournamentsFilter(value: any): Promise<IResult<TournamentEntity[], IError>> {
+    async getTournamentsFilter(value: any): Promise<IResult<any, IError>> {
       try {
-        this.typeORMRepository = getRepository(TournamentEntity);
-        const result = await this.typeORMRepository.find({ where: value });
+        const { page, perPage } = value;
 
-        return { result };
+        delete value.page;
+        delete value.perPage;
+        this.typeORMRepository = getRepository(TournamentEntity);
+        const [result, total] = await this.typeORMRepository.findAndCount(
+          {
+            where: value,
+            take: perPage,
+            skip: page - 1,
+          },
+        );
+
+        return { result: { data: result, count: total } };
       } catch (error) {
         return { error };
       }

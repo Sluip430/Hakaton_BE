@@ -31,6 +31,8 @@ export const getTournamentValidation = Joi.object().keys({
   number_of_participants: Joi.number().min(2).max(10),
   scenario: Joi.string().min(2),
   players: Joi.number().min(2),
+  page: Joi.number().positive().default(1),
+  perPage: Joi.number().positive().default(20),
 });
 
 export const tournamentValidation = Joi.object().keys({
